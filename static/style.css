@@ -1,0 +1,106 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #141e30, #243b55);
+}
+
+/* App */
+.app {
+    width: 520px;
+    height: 680px;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    background: #0f172a;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+    overflow: hidden;
+}
+
+/* Header */
+.header {
+    padding: 15px;
+    text-align: center;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    color: white;
+}
+
+/* Chat */
+.chatbox {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+/* Messages */
+.msg {
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 10px;
+    max-width: 75%;
+}
+
+.user {
+    background: #3b82f6;
+    color: white;
+    margin-left: auto;
+}
+
+.bot {
+    background: #1e293b;
+    color: white;
+}
+
+/* Input */
+.input-bar {
+    display: flex;
+    padding: 10px;
+    gap: 5px;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #00c6ff;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0099cc;
+}
+
+/* Career */
+.career-box {
+    background: #22c55e;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Jobs */
+.job-card {
+    background: white;
+    color: black;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+.job-title {
+    font-weight: bold;
+}
+
+.job-card a {
+    color: blue;
+    text-decoration: none;
+}

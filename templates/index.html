@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Career Assistant</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="header">
+        <h2>AI Career Assistant 🤖</h2>
+        <p>Career + Job Recommendation System</p>
+    </div>
+
+    <div id="chatbox" class="chatbox"></div>
+
+    <div class="input-bar">
+        <input id="input" placeholder="Enter skills (python, data, design)">
+        <button onclick="send()">Send</button>
+        <button onclick="showMetrics()">📊</button>
+    </div>
+
+</div>
+
+<script>
+let skillChart;
+let cmChart;
+
+// SEND MESSAGE
+async function send() {
+    let input = document.getElementById("input");
+    let chatbox = document.getElementById("chatbox");
+
+    let msg = input.value;
+    if(msg.trim() === "") return;
+
+    // User message
+    chatbox.innerHTML += `<div class="msg user">${msg}</div>`;
+
+    // Typing message
+    let typing = document.createElement("div");
+    typing.className = "msg bot";
+    typing.innerHTML = "Analyzing...";
+    chatbox.appendChild(typing);
+
+    // API call
+    let res = await fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: msg})
+    });
+
+    let data = await res.json();
+
+    // Show bot response
+    typing.innerHTML = data.reply;
+
+    // Render Skill Chart
+    setTimeout(() => {
+        let canvas = document.getElementById("skillChart");
+        if (!canvas) return;
+
+        let ctx = canvas.getContext("2d");
+
+        if (skillChart) skillChart.destroy();
+
+        skillChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: "Skill Strength",
+                    data: data.values,
+                    backgroundColor: ["#3b82f6","#22c55e","#f59e0b","#ef4444","#8b5cf6"]
+                }]
+            }
+        });
+    }, 100);
+
+    input.value = "";
+    chatbox.scrollTop = chatbox.scrollHeight;
+}
+
+// SHOW METRICS
+async function showMetrics() {
+    let chatbox = document.getElementById("chatbox");
+
+    let res = await fetch("/metrics");
+    let data = await res.json();
+
+    chatbox.innerHTML += `
+        <div class="msg bot">
+            <b>Accuracy:</b> ${data.accuracy}<br><br>
+            <canvas id="cmChart" height="120"></canvas>
+        </div>
+    `;
+
+    setTimeout(() => {
+        let ctx = document.getElementById("cmChart").getContext("2d");
+
+        if (cmChart) cmChart.destroy();
+
+        cmChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: "Confusion Matrix",
+                    data: data.confusion_matrix.flat(),
+                    backgroundColor: "#22c55e"
+                }]
+            }
+        });
+    }, 100);
+
+    chatbox.scrollTop = chatbox.scrollHeight;
+}
+</script>
+
+</body>
+</html>
