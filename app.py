@@ -7,14 +7,13 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 import pandas as pd
 
 # ✅ CREATE APP FIRST
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates", static_folder="static")
 
 
 # ---------------- HOME ----------------
 @app.route("/")
 def home():
-    return "WORKING ✅"
-
+    return render_template("index.html")
 
 # ---------------- CHAT ----------------
 @app.route("/chat", methods=["POST"])
